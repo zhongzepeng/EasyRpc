@@ -8,4 +8,8 @@
     <PackageReference Include="System.Reflection.DispatchProxy" Version="4.5.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EasyRpc.Core\EasyRpc.Core.csproj" />
+  </ItemGroup>
+
 </Project>

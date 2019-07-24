@@ -11,7 +11,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C1934DF5-BC2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{6D412645-3341-4D76-B949-30F9468733AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyRpc.Client.Test", "test\EasyRpc.Client.Test\EasyRpc.Client.Test.csproj", "{FF3DF3E2-4B53-4458-A79C-607A45B3FFF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyRpc.Client.Test", "test\EasyRpc.Client.Test\EasyRpc.Client.Test.csproj", "{FF3DF3E2-4B53-4458-A79C-607A45B3FFF0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyRpc.Core", "src\EasyRpc.Core\EasyRpc.Core.csproj", "{3F36430A-7A85-4005-9569-9289207920B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +33,10 @@ Global
 		{FF3DF3E2-4B53-4458-A79C-607A45B3FFF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF3DF3E2-4B53-4458-A79C-607A45B3FFF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF3DF3E2-4B53-4458-A79C-607A45B3FFF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F36430A-7A85-4005-9569-9289207920B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F36430A-7A85-4005-9569-9289207920B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F36430A-7A85-4005-9569-9289207920B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F36430A-7A85-4005-9569-9289207920B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -39,6 +45,7 @@ Global
 		{22CF457A-36FB-474E-968D-E2CC8ADCA349} = {C1934DF5-BC25-4818-991E-A06C26472553}
 		{6CEB0609-A399-464E-933E-07A13DB72001} = {C1934DF5-BC25-4818-991E-A06C26472553}
 		{FF3DF3E2-4B53-4458-A79C-607A45B3FFF0} = {6D412645-3341-4D76-B949-30F9468733AD}
+		{3F36430A-7A85-4005-9569-9289207920B3} = {C1934DF5-BC25-4818-991E-A06C26472553}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D6D57929-B9FC-42C7-8CBF-0EE8A10BB808}

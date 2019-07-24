@@ -1,7 +1,4 @@
-﻿using Newtonsoft.Json;
-using System.Text;
-
-namespace EasyRpc.Core.Model
+﻿namespace EasyRpc.Core.Model
 {
     public class AuthenticationModel
     {

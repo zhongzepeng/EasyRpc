@@ -16,6 +16,12 @@ namespace EasyRpc.Client.Proxy
             return ProxyGenerator.Create(typeof(TInterfaceType), this) as TInterfaceType;
         }
 
+        /// <summary>
+        /// 在此次处理rpc 数据传输
+        /// </summary>
+        /// <param name="method"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
         public object Intercept(MethodInfo method, object[] parameters)
         {
             Console.WriteLine($"invoke,method:{method.Name},par:{parameters.Length}");

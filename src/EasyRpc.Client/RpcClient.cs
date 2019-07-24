@@ -1,19 +1,21 @@
-﻿//using EasyRpc.Core;
-//using System;
-//using System.Threading.Tasks;
+﻿using EasyRpc.Core;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
 
-//namespace EasyRpc.Client
-//{
-//    public class RpcClient : IRpcHost
-//    {
-//        public Task StartAsync()
-//        {
-//            throw new NotImplementedException();
-//        }
+namespace EasyRpc.Client
+{
+    public class RpcClient : IRpcHost
+    {
+        private readonly ILogger<RpcClient> logger;
+        public Task StartAsync()
+        {
+            throw new NotImplementedException();
+        }
 
-//        public Task StopAsync()
-//        {
-//            throw new NotImplementedException();
-//        }
-//    }
-//}
+        public Task StopAsync()
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
