@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EasyRpc.Server
+namespace EasyRpc
 {
     public class Class1
     {
