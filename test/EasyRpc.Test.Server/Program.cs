@@ -15,13 +15,16 @@ namespace EasyRpc.Test.Server
         {
             var serviceCollection = new ServiceCollection();
             var configuration = BuildConfiguration();
+            serviceCollection.AddLogging(configure => configure.AddConsole());
+
+            //获取需要注册的服务所在的程序集
             var serviceAssembly = Assembly.GetAssembly(typeof(IUserService));
             serviceCollection.AddRpcServer(configuration, serviceAssembly);
-            serviceCollection.AddLogging(configure => configure.AddConsole());
             var serviceProvider = serviceCollection.BuildServiceProvider();
             var server = serviceProvider.GetService<RpcServer>();
             await server.StartAsync();
-            Console.WriteLine("Press Ctrl+C To Exits");
+
+
             Console.ReadKey();
         }
 

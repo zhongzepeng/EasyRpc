@@ -16,12 +16,10 @@ namespace EasyRpc.Test.Client
         {
             var serviceCollection = new ServiceCollection();
             var configuration = BuildConfiguration();
-            serviceCollection.AddRpcClient(configuration);
             serviceCollection.AddLogging(configure => configure.AddConsole());
 
+            serviceCollection.AddRpcClient(configuration);
             var serviceProvider = serviceCollection.BuildServiceProvider();
-
-            var serializer = serviceProvider.GetService<ISerializer>();
             var client = serviceProvider.GetService<RpcClient>();
             await client.StartAsync();
 
