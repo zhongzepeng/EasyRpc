@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Linq;
 using System;
 using System.Threading.Tasks;
@@ -59,7 +60,7 @@ namespace EasyRpc.App.Server
 
         private async Task OnRemoteInvokeRequest(IChannel<Package> channel, RemoteInvokeTransport<RemoteInvokeRequest> request)
         {
-            logger.LogInformation($"服务端接受到一个数据包：{request.Content}");
+            logger.LogDebug($"服务端接受到一个数据包：{request.Content}");
             var id = request.Id;
             var invokeRequest = request.Content;
 
@@ -110,22 +111,44 @@ namespace EasyRpc.App.Server
                 return;
             }
 
-            var result = method.Invoke(instance, parameters.ToArray());
+            var result = await InvokeMethod(method, instance, parameters.ToArray());
 
-            //异步返回
-            if (result.GetType() == typeof(Task) || result.GetType().GetGenericTypeDefinition() == typeof(Task<>))
-            {
-                var task = (Task)result;
-                await task.ConfigureAwait(false);
-                var resultProperty = task.GetType().GetProperty("Result")?.GetValue(task);
-                logger.LogInformation(resultProperty.ToString() + "1111");
-            }
-
-            logger.LogInformation($"{result.GetType()}");
-
-            await SendAsync(channel, RemoteInvokeResponse.CreateSuccess(null), id);
+            await SendAsync(channel, result, id);
         }
 
+        private async Task<RemoteInvokeResponse> InvokeMethod(MethodInfo methodInfo, Object instance, object[] parameters)
+        {
+            var result = methodInfo.Invoke(instance, parameters.ToArray());
+
+            if (methodInfo.ReturnType == typeof(void) || methodInfo.ReturnType == typeof(Task))
+            {
+                return RemoteInvokeResponse.CreateSuccess(null);
+            }
+            object resultObj;
+            if (result.GetType().IsGenericType && result.GetType().GetGenericTypeDefinition() == typeof(Task<>))
+            {
+                if (result.GetType().GetGenericArguments().Count() > 1)
+                {
+                    return RemoteInvokeResponse.CreateFail("不支持多个泛型参数的方法");
+                }
+
+                var task = (Task)result;
+                await task.ConfigureAwait(false);
+                resultObj = task.GetType().GetProperty("Result").GetValue(task);
+            }
+            else
+            {
+                resultObj = result;
+            }
+            if (resultObj == null)
+            {
+                return RemoteInvokeResponse.CreateSuccess(null);
+            }
+            else
+            {
+                return RemoteInvokeResponse.CreateSuccess(serializer.Serialize(resultObj));
+            }
+        }
 
         private async Task SendAsync(IChannel<Package> channel, RemoteInvokeResponse res, Guid id)
         {

@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using System;
 using System.Reflection;
 using EasyRpc.RemoteInvoke;
@@ -5,7 +6,6 @@ using EasyRpc.RemoteInvoker;
 using EasyRpc.Serialization;
 using Infrastructure.Basics.Async;
 using Microsoft.Extensions.Logging;
-using NetworkClient = Infrastructure.Network.Host.Impl.Client;
 
 namespace EasyRpc.App.Proxy.Impl
 {
@@ -13,11 +13,14 @@ namespace EasyRpc.App.Proxy.Impl
     {
         private readonly ILogger<DefaultServiceProxyGenerator> logger;
         private readonly IRemoteInvoker remoteInvoker;
+        private readonly ISerializer serializer;
         public DefaultServiceProxyGenerator(ILogger<DefaultServiceProxyGenerator> logger
-        , IRemoteInvoker remoteInvoker)
+        , IRemoteInvoker remoteInvoker
+        , ISerializer serializer)
         {
             this.remoteInvoker = remoteInvoker;
             this.logger = logger;
+            this.serializer = serializer;
         }
 
         public object Generate(Type interfaceType)
@@ -32,14 +35,32 @@ namespace EasyRpc.App.Proxy.Impl
 
         public object InterceptAsync(MethodInfo method, object[] parameters)
         {
-            logger.LogInformation($"执行方法,{method.Name}");
             var request = RemoteInvokeRequest.Create(method, parameters);
 
-            // var response = remoteInvoker.Invoke(request).GetAwaiter().GetResult();
             var response = AsyncHelper.RunSync(() => remoteInvoker.Invoke(request));
 
-            logger.LogInformation($"方法执行结果：{response.Success}");
-            return null;
+            if (method.ReturnType == typeof(void))
+            {
+                return null;
+            }
+
+            if (method.ReturnType == typeof(Task))
+            {
+                return Task.CompletedTask;
+            }
+
+            if (method.ReturnType.IsGenericType && method.ReturnType.GetGenericTypeDefinition() == typeof(Task<>))
+            {
+                var returnValueType = method.ReturnType.GetGenericArguments()[0];
+
+                var resultValue = serializer.Deserialize(response.Data, returnValueType);
+
+                return Task.FromResult(resultValue);
+            }
+            else
+            {
+                return serializer.Deserialize(response.Data, method.ReturnType);
+            }
         }
     }
 }

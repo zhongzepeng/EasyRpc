@@ -12,5 +12,9 @@ namespace EasyRpc.Test.Common
         Task<string> GetUserNameByIdAsync(int id);
 
         T GetUser<T>(int id);
+
+        void Update(int id);
+
+        Task UpdateAsync(int id);
     }
 }

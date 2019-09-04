@@ -25,5 +25,13 @@ namespace EasyRpc.Test.Common
             return Task.FromResult("username");
         }
 
+        public void Update(int id)
+        {
+        }
+
+        public async Task UpdateAsync(int id)
+        {
+            await Task.CompletedTask;
+        }
     }
 }

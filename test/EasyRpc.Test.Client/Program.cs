@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using EasyRpc.Extensions;
 using EasyRpc.App.Client;
 using EasyRpc.Test.Common;
+using EasyRpc.Serialization;
 
 namespace EasyRpc.Test.Client
 {
@@ -20,15 +21,16 @@ namespace EasyRpc.Test.Client
 
             var serviceProvider = serviceCollection.BuildServiceProvider();
 
+            var serializer = serviceProvider.GetService<ISerializer>();
             var client = serviceProvider.GetService<RpcClient>();
             await client.StartAsync();
 
             var userService = client.CreateProxy<IUserService>();
-            // userService.GetUserNameById(new TestParam { Id = 1.ToString() });
-            // await userService.GetUserNameByIdAsync(1);
-            userService.GetUser<TestParam>(1);
-            var result = userService.GetUserNameById(new TestParam { Id = 1.ToString() });
-
+            for (int i = 0; i < 100; i++)
+            {
+                var result = userService.GetUserNameById(new TestParam { Id = 1.ToString() });
+                Console.WriteLine($"{result}----{i}");
+            }
             Console.ReadLine();
         }
 

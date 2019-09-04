@@ -32,7 +32,6 @@ namespace EasyRpc.RemoteInvoker.Impl
                 var callbackTask = RegisterCallbackAsync(transport.Id);
                 try
                 {
-
                     var package = new Package
                     {
                         Type = PackageType.Transfer,
@@ -43,13 +42,13 @@ namespace EasyRpc.RemoteInvoker.Impl
                 }
                 catch (Exception ex)
                 {
-                    throw new EasyRpcException("执行出错1", ex);
+                    throw new EasyRpcException("执行远程方法失败", ex);
                 }
                 return await callbackTask;
             }
             catch (Exception ex)
             {
-                throw new EasyRpcException("执行出错", ex);
+                throw new EasyRpcException("执行远程方法失败", ex);
             }
         }
 
